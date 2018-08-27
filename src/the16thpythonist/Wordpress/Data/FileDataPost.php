@@ -139,7 +139,13 @@ abstract class FileDataPost implements FileData
     }
 
     /**
+     * Calls the wordpress update post function with the object attributes name & data of the wrapper
      *
+     * CHANGELOG
+     *
+     * Added 27.08.2018
+     *
+     * @since 0.0.0.0
      */
     private function update_post()
     {
