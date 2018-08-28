@@ -18,7 +18,7 @@
       "the16thpythonist\\Wordpress\\Data\\Type\\": "src/the16thpythonist/Wordpress/Data/Type",
       "the16thpythonist\\Wordpress\\Data\\Decoding\\": "src/the16thpythonist/Wordpress/Data/Decoding",
       "the16thpythonist\\Wordpress\\Data\\Encoding\\": "src/the16thpythonist/Wordpress/Data/Encoding",
-      "the16thpythonist\\Wordpress\\Data\\Structure\\": "src/the16thpythonist/Wordpress/Data/Structure",
+      "the16thpythonist\\Wordpress\\Data\\Structure\\": "src/the16thpythonist/Wordpress/Data/Structure"
     }
   }
 }
