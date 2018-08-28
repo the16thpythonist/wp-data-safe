@@ -90,7 +90,7 @@ class DataPostRegistration
      *
      * @return string
      */
-    private function getTypeTaxonomyName() {
+    public function getTypeTaxonomyName() {
         return $this->post_type . '_type';
     }
 }
