@@ -9,7 +9,7 @@
 namespace the16thpythonist\Wordpress\Data;
 
 // All the uses need to be hardcoded. If a new type has been created it needs to be updated here
-use the16thplayer\Wordpress\Data\Type\JSONFilePost;
+use the16thpythonist\Wordpress\Data\Type\JSONFilePost;
 
 /**
  * Class DataPost
@@ -313,7 +313,7 @@ class DataPost
      * @param $wp_query
      * @return string
      */
-    private static function queryTitleFilter($where, $wp_query) {
+    public static function queryTitleFilter($where, $wp_query) {
         global $wpdb;
         if ( $post_title_like = $wp_query->get('post_title_like') ) {
             $where .= ' AND ' . $wpdb->posts . '.post_title LIKE \'%' . esc_sql( $wpdb->esc_like( $post_title_like ) ) . '%\'';
