@@ -6,7 +6,7 @@
  * Time: 14:27
  */
 
-namespace the16thplayer\Wordpress\Data;
+namespace the16thpythonist\Wordpress\Data;
 
 /**
  * Class DataPostRegistration

@@ -6,7 +6,7 @@
  * Time: 13:58
  */
 
-namespace the16thplayer\Wordpress\Data;
+namespace the16thpythonist\Wordpress\Data;
 
 
 /**

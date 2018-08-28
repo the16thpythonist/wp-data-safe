@@ -6,9 +6,9 @@
  * Time: 15:03
  */
 
-namespace the16thplayer\Wordpress\Data\Type;
+namespace the16thpythonist\Wordpress\Data\Type;
 
-use the16thplayer\Wordpress\Data\FileDataPost;
+use the16thpythonist\Wordpress\Data\FileDataPost;
 
 /**
  * Class JSONFilePost

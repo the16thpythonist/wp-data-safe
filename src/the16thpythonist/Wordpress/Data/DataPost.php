@@ -6,7 +6,7 @@
  * Time: 14:44
  */
 
-namespace the16thplayer\Wordpress\Data;
+namespace the16thpythonist\Wordpress\Data;
 
 // All the uses need to be hardcoded. If a new type has been created it needs to be updated here
 use the16thplayer\Wordpress\Data\Type\JSONFilePost;

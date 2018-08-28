@@ -6,6 +6,8 @@
  * Time: 13:17
  */
 
+namespace the16thpythonist\Wordpress\Data\Encoding;
+
 
 /**
  * Interface DataEncoder

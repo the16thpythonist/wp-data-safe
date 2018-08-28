@@ -6,7 +6,7 @@
  * Time: 11:38
  */
 
-namespace the16thplayer\Wordpress\Data;
+namespace the16thpythonist\Wordpress\Data;
 
 /**
  * Interface FileData
