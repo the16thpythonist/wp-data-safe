@@ -14,7 +14,38 @@ use the16thplayer\Wordpress\Data\Type\JSONFilePost;
 /**
  * Class DataPost
  *
+ * The DataPost system:
+ * The idea is to have a custom post type, that can be used to save different kinds of data, just like in files.
+ * For example a "prices.json" file-post could be used to store a set of fruit prices in JSON format and a.
+ * "authors.matrix" could be used to store author names in a custom matrix data type.
  *
+ * One might be wondering why not just use files then? There are two reasons.
+ * 1. One could be using a distributed system like Openshift to host the wordpress website. This enables the site to be
+ * scalable and react dynamically to traffic by creating and deleting more VM instances of wordpress. This means however
+ * that when one instance creates a new file in some folder it will not be copied back to all other instances. There
+ * are only two things that are common and shared among the instances one special folder, which is most of the time the
+ * media folder and the database containing the posts etc. This way uploading a new image or creating a post will indeed
+ * be seen amongst all instances. By using the posts as data storage files, there doesnt have to be trouble of finding
+ * out which folder is persistent among all VM instances.
+ * 2. Creating a new file type wrapper with this system makes it possible to write custom encoder and decoders for the
+ * data structure. That means when the data type has been defined once, a custom graph data structure could be saved
+ * and retrieved to the system by just a single method call.
+ *
+ * This class acts as the main interface between the DataPost system and the user/developer. It offers the following
+ * STATIC methods:
+ * - exists: returns whether or not a file with that filename exists
+ * - load: Loads a data post by the file name
+ * - create: Creates a new file with given name and type. returns the wrapper object <- use it to save the content in p
+ *
+ * There is no "folder" system. Names have to be unique! Use prefixing in the name string to indicate some sort of
+ * hierarchy instead. Also note that only filenames of files with the same type have to be unique.
+ * Having a "prices.json" and a "prices.matrix" is ok.
+ *
+ * CHANGELOG
+ *
+ * Added 28.08.2018
+ *
+ * @since 0.0.0.0
  *
  * @package the16thplayer\Wordpress\Data
  */
