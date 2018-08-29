@@ -42,10 +42,10 @@ class JSONFilePost extends FileDataPost
      *
      * @return object
      */
-    public function load(): object
+    public function load()
     {
         $encoded = $this->read();
-        $data = json_decode($encoded);
+        $data = json_decode($encoded, true);
         return $data;
     }
 
@@ -61,7 +61,7 @@ class JSONFilePost extends FileDataPost
      * @param object $content
      * @return void
      */
-    public function save(object $content)
+    public function save($content)
     {
         $encoded = json_encode($content, JSON_PRETTY_PRINT);
         $this->write($encoded);

@@ -40,7 +40,7 @@ interface FileData
      *
      * @return object
      */
-    public function load(): object;
+    public function load();
 
     /**
      * Saves a given data structure, by encoding it into a string.
@@ -48,5 +48,5 @@ interface FileData
      * @param object $content
      * @return mixed
      */
-    public function save(object $content);
+    public function save($content);
 }

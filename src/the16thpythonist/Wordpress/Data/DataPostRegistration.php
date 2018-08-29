@@ -33,10 +33,14 @@ class DataPostRegistration
      *
      * Added 27.08.2018
      *
+     * Changed 29.08.2018
+     * Added the registration of the type taxonomy as a hookin
+     *
      * @since 27.08.2018
      */
     public function register() {
-        add_action('init', array($this, 'register_post_type'));
+        add_action('init', array($this, 'registerPostType'));
+        add_action('init', array($this, 'registerTypeTaxonomy'));
     }
 
     /**
@@ -46,9 +50,13 @@ class DataPostRegistration
      *
      * Added 27.08.2018
      *
+     * Changed 29.08.2018
+     * Renamed function from "register_post_type" to "registerPostType". I dont know what I thought when doing the
+     * first name, that was Python style guide not PHP.
+     *
      * @since 0.0.0.0
      */
-    public function register_post_type() {
+    public function registerPostType() {
         $args = array(
             'label'                 => $this->label,
             'description'           => 'This post type describes a data storage for data of different data types',
@@ -71,6 +79,28 @@ class DataPostRegistration
             )
         );
         register_post_type(
+            $this->post_type,
+            $args
+        );
+    }
+
+    /**
+     * Registers the new type taxonomy for the Data CPT in wordpress
+     *
+     * CHANGELOG
+     *
+     * Added 29.08.2018
+     *
+     * @since 0.0.0.0
+     */
+    public function registerTypeTaxonomy() {
+        $args = array(
+            'public'            => true,
+            'label'             => 'Type',
+            'description'       => 'The "file type" of the data posts'
+        );
+        register_taxonomy(
+            $this->getTypeTaxonomyName(),
             $this->post_type,
             $args
         );

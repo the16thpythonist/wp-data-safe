@@ -123,6 +123,9 @@ class DataPost
      *
      * Added 28.08.2018
      *
+     * Changed 29.08.2018
+     * Added an if condition, that checks if the post already exists and only creates a new one in case it doesnt
+     *
      * @since 0.0.0.0
      *
      * @param string $filename
@@ -131,11 +134,13 @@ class DataPost
     public static function create(string $filename) {
         $file = static::explodeFilename($filename);
 
-        // Creating the wordpress post
-        $post_id = static::createWordpressPost($file['name'], $file['type']);
+        if (!static::exists($filename)) {
+            // Creating the wordpress post
+            $post_id = static::createWordpressPost($file['name'], $file['type']);
 
-        // Creating a wrapper object
-        return static::createWrapperObject((string) $post_id, $file['type']);
+            // Creating a wrapper object
+            return static::createWrapperObject((string) $post_id, $file['type']);
+        }
     }
 
     /**
@@ -180,7 +185,7 @@ class DataPost
                 static::$REGISTRATION->getTypeTaxonomyName() => $type,
             ),
         );
-        return wp_insert_post($args);
+        return \wp_insert_post($args);
     }
 
     /**
@@ -236,7 +241,7 @@ class DataPost
                 )
             )
         );
-        $query = WP_Query($args);
+        $query = new \WP_Query($args);
         return $query;
     }
 
