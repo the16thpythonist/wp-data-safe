@@ -132,14 +132,17 @@ class DataPost
      * @return mixed
      */
     public static function create(string $filename) {
-        $file = static::explodeFilename($filename);
 
         if (!static::exists($filename)) {
+            $file = static::explodeFilename($filename);
+
             // Creating the wordpress post
             $post_id = static::createWordpressPost($file['name'], $file['type']);
 
             // Creating a wrapper object
             return static::createWrapperObject((string) $post_id, $file['type']);
+        } else {
+            return static::load($filename);
         }
     }
 
