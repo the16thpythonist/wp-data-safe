@@ -8,6 +8,7 @@
 
 namespace the16thpythonist\Wordpress\Data;
 
+
 /**
  * Class DataPostRegistration
  *
@@ -36,11 +37,26 @@ class DataPostRegistration
      * Changed 29.08.2018
      * Added the registration of the type taxonomy as a hookin
      *
+     * Changed 31.08.2018
+     * Added the registration of the two ajax methods, that will be used to read and write data files from the
+     * frontend directly.
+     * Added the registration of the javascript file 'function.js', which contains the JS functions, used to read and
+     * write the DataPost files directly from the frontend.
+     *
      * @since 27.08.2018
      */
     public function register() {
         add_action('init', array($this, 'registerPostType'));
         add_action('init', array($this, 'registerTypeTaxonomy'));
+
+        /*
+         * These ajax functions will be used to read and write data files from the frontend directly.
+         * no_priv access is not yet supported.
+         */
+        add_action('wp_ajax_read_data file', array($this, 'ajaxReadData'));
+        add_action('wp_ajax_write_data_file', array($this, 'ajaxWriteData'));
+
+        add_action('wp_enqueue_scripts', array($this, 'registerScript'));
     }
 
     /**
@@ -123,4 +139,65 @@ class DataPostRegistration
     public function getTypeTaxonomyName() {
         return $this->post_type . '_type';
     }
+
+    /**
+     * Registers the 'functions.js' script with wordpress, so that it is send with each html page.
+     *
+     * CHANGELOG
+     *
+     * Added 31.08.2018
+     *
+     * @since 0.0.0.2
+     */
+    public function registerScript() {
+        $url = plugin_dir_url(__FILE__) . 'functions.js';
+        wp_enqueue_script('data-post-function', $url);
+    }
+
+    /**
+     * The method that will be hooked into the ajax response for getting data from the wp-data-safe system
+     *
+     * The AJAX request has to be html GET based and the filename has to be passed by the url-variable 'filename'
+     *
+     * CHANGELOG
+     *
+     * Added 31.08.2018
+     *
+     * @since 0.0.0.2
+     */
+    public function ajaxReadData() {
+        if (array_key_exists('filename', $_GET)) {
+            $name = $_GET['filename'];
+            $file = DataPost::load($name);
+            echo $file->read();
+        } else {
+            echo 'ERROR: No file name has been passed';
+        }
+    }
+
+    /**
+     * The method that will be hooked into the ajax response for writing to a DataPost
+     *
+     * The AJAX request has to be html GET based and contain the following url variables:
+     * - filename: The string name of the file to write to. Has to contain the file extension as well
+     * - data: The string data to be written into the file
+     *
+     * Note that, this function does not support anything else, but strings to be written into the file, so the
+     * correct encoding of data structures has to be done within the front end.
+     *
+     * CHANGELOG
+     *
+     * Added 31.08.2018
+     *
+     * @since 0.0.0.2
+     */
+    public function ajaxWriteData() {
+        if (array_key_exists('filename', $_GET) && array_key_exists('data', $_GET)) {
+            $name = $_GET['filename'];
+            $data = $_GET['data'];
+            $file = DataPost::create($name);
+            $file->write($data);
+        }
+    }
+
 }
