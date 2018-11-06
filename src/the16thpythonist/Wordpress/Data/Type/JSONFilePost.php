@@ -10,6 +10,8 @@ namespace the16thpythonist\Wordpress\Data\Type;
 
 use the16thpythonist\Wordpress\Data\FileDataPost;
 
+
+
 /**
  * Class JSONFilePost
  *
@@ -40,13 +42,37 @@ class JSONFilePost extends FileDataPost
      *
      * @since 0.0.0.0
      *
-     * @return object
+     * @return array
      */
     public function load()
     {
         $encoded = $this->read();
-        $data = json_decode($encoded, true);
-        return $data;
+        $sanitized = $this->sanitizeJSON($encoded);
+        //$sanitized = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $sanitized);
+        //$sanitized = utf8_encode($sanitized);
+        return json_decode($sanitized, TRUE);
+    }
+
+    private function sanitizeJSON(string $encoded) {
+        // This will remove unwanted characters.
+        // Check http://www.php.net/chr for details
+        for ($i = 0; $i <= 31; ++$i) {
+            $encoded = str_replace(chr($i), "", $encoded);
+        }
+        $encoded = str_replace(chr(127), "", $encoded);
+
+        // This is the most common part
+        // Some file begins with 'efbbbf' to mark the beginning of the file. (binary level)
+        // here we detect it and we remove it, basically it's the first 3 characters
+        if (0 === strpos(bin2hex($encoded), 'efbbbf')) {
+            $encoded = substr($encoded, 3);
+        }
+
+        $encoded = preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $encoded);
+        $encoded = stripslashes($encoded);
+        $encoded = utf8_encode($encoded);
+
+        return $encoded;
     }
 
     /**
@@ -58,11 +84,12 @@ class JSONFilePost extends FileDataPost
      *
      * @since 0.0.0.0
      *
-     * @param object $content
+     * @param $content
      * @return void
      */
     public function save($content)
     {
+
         $encoded = json_encode($content, JSON_PRETTY_PRINT);
         $this->write($encoded);
     }

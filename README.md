@@ -18,3 +18,7 @@ string content of a data post directly.
 - The post type registration now enqueues a JS script, which contains functions, that can be used to read and write 
 data posts from JS directly using AJAX GET requests.
 - Added file 'functions.js'
+
+### 0.0.0.3 - 06.11.2018
+
+- Minor bug fixes

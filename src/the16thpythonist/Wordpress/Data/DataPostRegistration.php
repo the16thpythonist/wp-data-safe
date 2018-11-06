@@ -43,6 +43,9 @@ class DataPostRegistration
      * Added the registration of the javascript file 'function.js', which contains the JS functions, used to read and
      * write the DataPost files directly from the frontend.
      *
+     * Changed 04.11.2018
+     * Added the registration for a wp ajax callback, that deletes a data post
+     *
      * @since 27.08.2018
      */
     public function register() {
@@ -53,10 +56,15 @@ class DataPostRegistration
          * These ajax functions will be used to read and write data files from the frontend directly.
          * no_priv access is not yet supported.
          */
-        add_action('wp_ajax_read_data file', array($this, 'ajaxReadData'));
+        add_action('wp_ajax_read_data_file', array($this, 'ajaxReadData'));
+        add_action('wp_ajax_nopriv_read_data_file', array($this, 'ajaxReadData'));
         add_action('wp_ajax_write_data_file', array($this, 'ajaxWriteData'));
+        // 04.11.2018
+        // When dealing with temporary file management on the front end, a delete function also became necessary
+        add_action('wp_ajax_delete_data_file', array($this, 'ajaxDeleteData'));
 
         add_action('wp_enqueue_scripts', array($this, 'registerScript'));
+        add_action('admin_enqueue_scripts', array($this, 'registerScript'));
     }
 
     /**
@@ -163,6 +171,9 @@ class DataPostRegistration
      *
      * Added 31.08.2018
      *
+     * Changed 29.10.2018
+     * Added a wp_die() at the end. Like this the ajax doesnt return the trailing 0
+     *
      * @since 0.0.0.2
      */
     public function ajaxReadData() {
@@ -173,6 +184,7 @@ class DataPostRegistration
         } else {
             echo 'ERROR: No file name has been passed';
         }
+        wp_die();
     }
 
     /**
@@ -189,6 +201,9 @@ class DataPostRegistration
      *
      * Added 31.08.2018
      *
+     * Changed 29.10.2018
+     * Added a wp_die() at the end. Like this the ajax doesnt return the trailing 0
+     *
      * @since 0.0.0.2
      */
     public function ajaxWriteData() {
@@ -198,6 +213,24 @@ class DataPostRegistration
             $file = DataPost::create($name);
             $file->write($data);
         }
+        wp_die();
+    }
+
+    /**
+     * Ajax callback for deleting a data post
+     *
+     * CHANGELOG
+     *
+     * Added 04.11.2018
+     */
+    public function ajaxDeleteData() {
+        // First we need to check if a filename even has been passed with the request
+        if (array_key_exists('filename', $_GET)) {
+            $name = $_GET['filename'];
+            DataPost::delete($name);
+        }
+        // Prevent a malformed AJAX response
+        wp_die();
     }
 
 }

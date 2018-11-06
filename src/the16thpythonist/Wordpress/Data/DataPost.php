@@ -328,4 +328,44 @@ class DataPost
         }
         return $where;
     }
+
+    /**
+     * Returns whether or not the "data" post type is already registered in wordpress
+     *
+     * CHANGELOG
+     *
+     * Added 28.10.2018
+     *
+     * @return bool
+     */
+    public static function isRegistered() {
+        return post_type_exists(self::$POST_TYPE);
+    }
+
+    /**
+     * Deletes the data post with the given filename
+     *
+     * CHANGELOG
+     *
+     * Added 04.11.2018
+     *
+     * @param string $filename
+     */
+    public static function delete(string $filename) {
+        // This function executes two queries, one being unnecessary, it could be made more effiecient by adding a
+        // optional reference parameter to the exists function, that passes out the already existant query object.
+
+        // First we need to check if such a post even exists
+        if (self::exists($filename)) {
+
+            // Here we create a query object, which will explicitly search for the one in question. We can assume, that
+            // if it exists it is the first post found by this query. Using the ID from this post we can simply delete
+            // the post
+            /** @var \WP_Query $query */
+            $query = self::getWpQuery($filename);
+            $post = $query->get_posts()[0];
+            $post_id = $post->ID;
+            wp_delete_post($post_id);
+        }
+    }
 }
