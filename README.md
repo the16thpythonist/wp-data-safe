@@ -22,3 +22,7 @@ data posts from JS directly using AJAX GET requests.
 ### 0.0.0.3 - 06.11.2018
 
 - Minor bug fixes
+
+### 0.0.0.4 - 20.11.2018
+
+- Added a utility function to the JS file, which loads new CSS files dynamically and adds them to the head

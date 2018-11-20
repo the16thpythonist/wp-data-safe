@@ -119,3 +119,16 @@ function deleteDataPost(filename) {
     };
     return ajaxDataPost(args);
 }
+
+/**
+ * Loads the CSS file with the given url, after the page has loaded dynamically
+ *
+ * CHANGELOG
+ *
+ * Added 06.11.2018
+ *
+ * @param url
+ */
+function loadCSS(url) {
+    jQuery(`<link rel="stylesheet" type="text/css" href="${url}">`).appendTo("head");
+}

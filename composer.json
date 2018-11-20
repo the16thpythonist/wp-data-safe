@@ -2,7 +2,7 @@
   "name": "the16thpythonist/wp-data-safe",
   "description": "Adding A post type, that can be used to store multiple formats of data as wordpress posts",
   "type":  "library",
-  "version": "0.0.0.0",
+  "version": "0.0.0.4",
   "authors": [
     {
       "name": "Jonas Teufel",
